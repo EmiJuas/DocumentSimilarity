@@ -1,12 +1,18 @@
 from predicion import Prediccion
-import numpy as np
+from normalizadorTexto import normalizarTexto
+import pandas as pd
+
 
 objeto_predicciones = Prediccion(Prediccion.BINARY, Prediccion.UNIGRAMA, Prediccion.TITULO)
 
-print(objeto_predicciones.representacion)
+df = pd.read_csv(r'.\corpus_raw_data.csv', sep='\t')
 
-print(objeto_predicciones.vectorizador)
+titulos = df['Title']
 
-query = ["OpenAI innovacion MEXICO "]
+query = ["Pepe pecas pica papas con un pico"]
+query[0] = normalizarTexto(query[0])
  
-objeto_predicciones.predecir(query)
+top10 = objeto_predicciones.predecir(query)
+for noticia in top10:
+    (indice, similitud) = noticia
+    print(f"{titulos[indice]} : {similitud}")

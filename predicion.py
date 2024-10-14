@@ -75,21 +75,25 @@ class Prediccion:
         
     #función para Predecir
     def predecir(self,query):
-        similitud = 0
-        top10 = {}
+        top10 = []
         representacion_query = self.vectorizador.transform(query)
         print(representacion_query)
-        for noticia in self.representacion.toarray():
+        cosenos = []
+        for indice,noticia in enumerate(self.representacion.toarray()):
             #se ingresó como arreglo para transform, así que se obtiene el unico registro
-            print(f"Se parece a: {self.cosine(noticia, representacion_query.toarray()[0])}")
+            cosenos.append((indice, self.cosine(noticia, representacion_query.toarray()[0])))
         #similitud = self.cosine(self.representacion.toarray(),representacion_query.toarray())
-        return similitud
+        cosenos.sort(reverse=True, key=lambda x: x[1])
+        top10 = cosenos[:9]
+        return top10
     
     #similitud coseno
     def cosine(self, x, y):
         val = sum(x[index] * y[index] for index in range(len(x)))
         sr_x = math.sqrt(sum(x_val**2 for x_val in x))
         sr_y = math.sqrt(sum(y_val**2 for y_val in y))
+        if(sr_y==0 or sr_x==0): #Si alguno es cero, la similitud es cero
+            return 0
         res = val/(sr_x*sr_y)
         return (res)
  
