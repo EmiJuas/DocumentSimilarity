@@ -11,6 +11,7 @@ titulos = df['Title'].fillna('')
 contenidos = df['Content'].fillna('')
 titulos_contenidos = []
 
+#concatenar titulo y contenido para la ultima representacion
 for i, titulo in enumerate(titulos):
     cont = contenidos[i]
     if cont != '':
@@ -19,7 +20,7 @@ for i, titulo in enumerate(titulos):
         titulos_contenidos.append(titulo)
 
 def guardaPickle(X, nombre):
-    nombreArch = 'X_vect_' + nombre + '.pkl'
+    nombreArch = './representaciones/X_vect_' + nombre + '.pkl'
     if (os.path.exists(nombreArch)):
         print ('Ya existe')
         with open(nombreArch, 'rb') as f:
@@ -45,6 +46,9 @@ for i, name in enumerate(['title', 'cont', 'title-cont']):
     corpus = arreglos[i]
     for tupla in [(1,1), (2,2)]:
         for tipo in ['frec', 'bin', 'tfidf']:
-            X = vecotrs(tipo, tupla).fit_transform(corpus)
-            guardaPickle(X, str(name) + '_' + str(tupla) + '_' + tipo)
+            vectorizador = vecotrs(tipo, tupla)
+            X = vectorizador.fit_transform(corpus)
+            #se guarda en el archivo la representación y el vecortizado que la orignó
+            tupla_a_guardar = (X, vectorizador)
+            guardaPickle(tupla_a_guardar, str(name) + '_' + str(tupla) + '_' + tipo)
             print(str(i) + '_' + str(tupla) + '_' + tipo + ' guardado')
