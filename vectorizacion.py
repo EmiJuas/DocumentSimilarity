@@ -7,6 +7,9 @@ import pickle
 
 df = pd.read_csv(r'.\corpus_normalized_data.csv', sep='\t')
 
+if not os.path.exists('./representaciones'):
+    os.makedirs('./representaciones')
+
 titulos = df['Title'].fillna('')
 contenidos = df['Content'].fillna('')
 titulos_contenidos = []
