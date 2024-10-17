@@ -1,10 +1,3 @@
-"""
-Archivo que solo se encarga de hacer las prediciones,
-para que sea utilizado por el script de pruebas
-y para el script de interfaz que quiere el profe
-y una que otra funcion auxiliar
-
-"""
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pickle
@@ -55,15 +48,15 @@ class Prediccion:
     def obtener_representacion(self, tipo_representacion, n_grama_usar, espacio_busqueda):
         #se obtiene la ruta
         archivo_representacion = f"./representaciones/X_vect_{espacio_busqueda}_{n_grama_usar}_{tipo_representacion}.pkl"
-        print(f"Busco el archivo: {archivo_representacion}")
+        #print(f"Busco el archivo: {archivo_representacion}")
         #se empieza a chambear
         try:
             if (os.path.exists(archivo_representacion)):
-                print ('Existe el archivo de la representación')
+                #print ('Existe el archivo de la representación')
                 with open(archivo_representacion, 'rb') as f:
                     return pickle.load(f)
             else:
-                print("No se encontró la representación deseada, ejecute la vectorización primero")
+                #print("No se encontró la representación deseada, ejecute la vectorización primero")
                 return None #falsos para futuras verificaciones
         except EOFError as eofe:
             print(f"El archivo está vacío o corrupto: {eofe}")
@@ -77,14 +70,14 @@ class Prediccion:
     def predecir(self,query):
         top10 = []
         representacion_query = self.vectorizador.transform(query)
-        print(representacion_query)
+        #print(representacion_query)
         cosenos = []
         for indice,noticia in enumerate(self.representacion.toarray()):
             #se ingresó como arreglo para transform, así que se obtiene el unico registro
             cosenos.append((indice, self.cosine(noticia, representacion_query.toarray()[0])))
         #similitud = self.cosine(self.representacion.toarray(),representacion_query.toarray())
         cosenos.sort(reverse=True, key=lambda x: x[1])
-        top10 = cosenos[:9]
+        top10 = cosenos[:10]
         return top10
     
     #similitud coseno
@@ -96,4 +89,3 @@ class Prediccion:
             return 0
         res = val/(sr_x*sr_y)
         return (res)
- 
