@@ -1,11 +1,25 @@
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
-import numpy as np
+import sys
 import pandas as pd
 import os.path
 import pickle
 
-df = pd.read_csv(r'.\corpus_normalized_data.csv', sep='\t')
+# Verificar si se pasó el archivo corpus como argumento
+if len(sys.argv) != 2:
+    print("Uso: python vectorizacion.py <ruta_al_archivo_corpus>")
+    sys.exit(1)
+
+# Leer la ruta del archivo corpus desde los argumentos de línea de comandos
+archivo_corpus = sys.argv[1]
+
+# Verificar si el archivo existe
+if not os.path.exists(archivo_corpus):
+    print(f"El archivo {archivo_corpus} no existe.")
+    sys.exit(1)
+
+# Leer el archivo corpus
+df = pd.read_csv(archivo_corpus, sep='\t')
 
 if not os.path.exists('./representaciones'):
     os.makedirs('./representaciones')

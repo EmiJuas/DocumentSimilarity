@@ -1,5 +1,5 @@
-scikit-learn
-numpy
-pandas
-stanza
-customtkinter
+customtkinter==5.2.2
+numpy==2.1.2
+pandas==2.2.3
+scikit_learn==1.5.2
+stanza==1.9.2

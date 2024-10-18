@@ -62,7 +62,6 @@ def crear_prediccion():
 
     # Predecir con el objeto_predicciones creado en la interfaz
     top10 = objeto_predicciones.predecir(query)
-    df = pd.read_csv(r'.\\corpus_raw_data.csv', sep='\t')
 
     # Limpiar la tabla antes de mostrar nuevos resultados
     for widget in frame_resultados.winfo_children():
